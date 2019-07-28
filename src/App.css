@@ -63,10 +63,36 @@
 }
 
 .todo-list-section ul li {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.todo-list-section .todo {
   margin: 0.5rem 0;
   border: 1px solid #d8d8d8;
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: 8px 0 0 8px;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.cross-box {
+  background: #282c34;
+  color: #d8d8d8;
+  font-size: 2em;
+  width: 40px;
+  border-radius: 5px;
+  border: 1px solid #d8d8d8;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
 }
 
 .App-header {

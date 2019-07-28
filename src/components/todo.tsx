@@ -18,7 +18,10 @@ const Todo: React.FC<TodoProps> = (props: TodoProps) => {
 
   return (
     <li className={effectClass}>
-      <span>{props.description}</span>
+      <span className="todo">{props.description}</span>
+      <div className="cross-box">
+        <span>X</span>
+      </div>
     </li>
   );
 };
