@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 
-export interface TodoProps {
+export interface ITodoProps {
   id: number;
   startDate?: Date;
   endDate?: Date;
   description: string;
+  onDelete: (id: number) => void;
 }
 
-const Todo: React.FC<TodoProps> = (props: TodoProps) => {
+const Todo: React.FC<ITodoProps> = (props: ITodoProps) => {
   const [effectClass, setEffectClass] = useState("");
 
   useEffect(() => {
@@ -19,7 +20,7 @@ const Todo: React.FC<TodoProps> = (props: TodoProps) => {
   return (
     <li className={effectClass}>
       <span className="todo">{props.description}</span>
-      <div className="cross-box">
+      <div className="cross-box" onClick={() => props.onDelete(props.id)}>
         <span>X</span>
       </div>
     </li>

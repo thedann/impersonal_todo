@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import todoLogo from "./img/ToDo.png";
 import "./App.css";
 import "./animation.css";
-import { TodoProps } from "./components/todo";
+import { ITodoProps } from "./components/todo";
 import { default as TodoList } from "./components/todoList";
 
 interface AppState {
-  todos: TodoProps[];
+  todos: ITodoProps[];
   currentInputValue: string;
 }
 
@@ -20,14 +20,26 @@ class App extends Component<{}, AppState> {
     this.setState({ currentInputValue: event.target.value });
   };
 
+  private updateTodoListState(todos: ITodoProps[]) {
+    this.setState({ todos: todos });
+  }
+
   private addTodo = () => {
-    let newTodo: TodoProps = {
+    let newTodo: ITodoProps = {
       id: this.state.todos.length,
+      onDelete: this.removeTodo,
       description: this.state.currentInputValue
     };
-    let todoList: TodoProps[] = this.state.todos;
+    let todoList: ITodoProps[] = this.state.todos;
     todoList.push(newTodo);
     this.setState({ todos: todoList, currentInputValue: "" });
+  };
+
+  private removeTodo = (id: number) => {
+    let filteredTodoList = this.state.todos.filter((todo: ITodoProps) => {
+      return todo.id !== id;
+    });
+    this.setState({ todos: filteredTodoList });
   };
 
   render() {
@@ -40,7 +52,7 @@ class App extends Component<{}, AppState> {
         <section className="add-todo-section">
           <input
             type="text"
-            placeholder="Enter a taks"
+            placeholder="Enter task"
             className="input"
             value={this.state.currentInputValue}
             onChange={this.handleInputChange}
@@ -51,6 +63,7 @@ class App extends Component<{}, AppState> {
         </section>
         <section className="todo-list-section swing">
           <TodoList
+            onDelete={this.removeTodo}
             todos={this.state.todos.length > 0 ? this.state.todos : []}
           />
         </section>

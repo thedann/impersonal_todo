@@ -1,15 +1,23 @@
 import React from "react";
-import { default as Todo, TodoProps } from "./todo";
+import { default as Todo, ITodoProps } from "./todo";
 
 interface TodoListProps {
-  todos: TodoProps[];
+  todos: ITodoProps[];
+  onDelete: (id: number) => void;
 }
 
 const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
   return (
     <ul className="todo-list">
       {props.todos.map(todo => {
-        return <Todo id={todo.id} description={todo.description} />;
+        return (
+          <Todo
+            onDelete={props.onDelete}
+            id={todo.id}
+            description={todo.description}
+            key={todo.id}
+          />
+        );
       })}
     </ul>
   );
