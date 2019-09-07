@@ -57,7 +57,11 @@ class App extends Component<{}, AppState> {
             value={this.state.currentInputValue}
             onChange={this.handleInputChange}
           />
-          <button type="button" className="add-button" onClick={this.addTodo}>
+          <button
+            type="button"
+            className="action-button"
+            onClick={this.addTodo}
+          >
             Add task
           </button>
         </section>
@@ -66,6 +70,11 @@ class App extends Component<{}, AppState> {
             onDelete={this.removeTodo}
             todos={this.state.todos.length > 0 ? this.state.todos : []}
           />
+        </section>
+        <section className="bottom-section">
+          <button type="button" className="action-button action-button--small">
+            Save list
+          </button>
         </section>
       </div>
     );
