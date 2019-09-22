@@ -4,6 +4,7 @@ import "./App.css";
 import "./animation.css";
 import { ITodoProps } from "./components/todo";
 import { default as TodoList } from "./components/todoList";
+import ApiHelper from "./helpers/ApiHelper";
 
 interface AppState {
   todos: ITodoProps[];
@@ -13,33 +14,59 @@ interface AppState {
 class App extends Component<{}, AppState> {
   constructor(props: AppState) {
     super(props);
+    var tempTodos: Array<ITodoProps> = [];
+
     this.state = { todos: [], currentInputValue: "" };
+
+    ApiHelper.get().then(response => {
+      response.forEach((item, index) => {
+        let newTodo: ITodoProps = {
+          id: index,
+          onDelete: this.removeTodo,
+          description: item,
+          isChecked: false
+        };
+        tempTodos.push(newTodo);
+      });
+      this.setState({ todos: tempTodos });
+    });
   }
 
   private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ currentInputValue: event.target.value });
   };
 
-  private updateTodoListState(todos: ITodoProps[]) {
-    this.setState({ todos: todos });
-  }
+  private keyDownAddTodo = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.keyCode === 13) {
+      this.addTodo();
+    }
+  };
 
   private addTodo = () => {
     let newTodo: ITodoProps = {
       id: this.state.todos.length,
       onDelete: this.removeTodo,
+      isChecked: false,
       description: this.state.currentInputValue
     };
     let todoList: ITodoProps[] = this.state.todos;
-    todoList.push(newTodo);
-    this.setState({ todos: todoList, currentInputValue: "" });
+
+    ApiHelper.post(newTodo).then(() => {
+      todoList.push(newTodo);
+      this.setState({ todos: todoList, currentInputValue: "" });
+    });
   };
 
   private removeTodo = (id: number) => {
-    let filteredTodoList = this.state.todos.filter((todo: ITodoProps) => {
-      return todo.id !== id;
+    ApiHelper.delete(id).then(response => {
+      if (response) {
+        let filteredTodoList = this.state.todos.filter((todo: ITodoProps) => {
+          return todo.id !== id;
+        });
+        this.setState({ todos: filteredTodoList });
+      } else {
+      }
     });
-    this.setState({ todos: filteredTodoList });
   };
 
   render() {
@@ -56,6 +83,7 @@ class App extends Component<{}, AppState> {
             className="input"
             value={this.state.currentInputValue}
             onChange={this.handleInputChange}
+            onKeyDown={this.keyDownAddTodo}
           />
           <button
             type="button"
@@ -73,7 +101,7 @@ class App extends Component<{}, AppState> {
         </section>
         <section className="bottom-section">
           <button type="button" className="action-button action-button--small">
-            Save list
+            Share list
           </button>
         </section>
       </div>

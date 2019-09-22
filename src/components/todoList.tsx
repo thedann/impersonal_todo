@@ -16,6 +16,7 @@ const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
             id={todo.id}
             description={todo.description}
             key={todo.id}
+            isChecked={false}
           />
         );
       })}

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 
 export interface ITodoProps {
   id: number;
-  startDate?: Date;
-  endDate?: Date;
+  isChecked: boolean;
   description: string;
   onDelete: (id: number) => void;
 }
